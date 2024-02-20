@@ -16,6 +16,8 @@ function createPingResultElement(ip, status, responseTime) {
     return container;
 }
 function pingDevice(event) {
+    let dialog = document.getElementById('errorMessage');
+dialog.textContent = ''; /* remove all existing child elements from dialog */
     event.preventDefault();
     let routerIP = event.target.getAttribute('data-router');
     let smIP = event.target.getAttribute('data-sm');
@@ -25,7 +27,7 @@ function pingDevice(event) {
         .then(data => {
             // Create and display ping result element
             const pingResultElement = createPingResultElement(data.ip, data.status, data.response_time);
-            document.body.appendChild(pingResultElement);
+            dialog.appendChild(pingResultElement);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -38,11 +40,12 @@ function pingDevice(event) {
             .then(data => {
                 // Create and display ping result element
                 const pingResultElement = createPingResultElement(data.ip, data.status, data.response_time);
-                document.body.appendChild(pingResultElement);
+               dialog.appendChild(pingResultElement);
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error fetching data. Please try again.');
+                dialog.showModal();
             });
     }
 }
